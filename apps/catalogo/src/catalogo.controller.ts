@@ -6,8 +6,8 @@ import { Catalogo } from './catalogo';
 export class CatalogoController {
   constructor(private readonly catalogoService: CatalogoService) {}
 
-  @Get('/testeCatalogo')
-  async getHello(): Promise<Catalogo[]> {
+  @Get('/getAllCatalogo')
+  async getAllCatalogo(): Promise<Catalogo[]> {
     return this.catalogoService.getCatalogo();
   }
 }

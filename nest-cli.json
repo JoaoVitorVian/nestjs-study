@@ -34,7 +34,8 @@
       "entryFile": "main",
       "sourceRoot": "apps/produto/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/produto/tsconfig.app.json"
+        "tsConfigPath": "apps/produto/tsconfig.app.json",
+        "assets": ["**/*.env"]
       }
     }
   }
