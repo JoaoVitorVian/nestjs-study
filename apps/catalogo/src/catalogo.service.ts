@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Catalogo } from './catalogo';
 import { CatalogoRepository } from './catalogo.repository';
+import { Product } from 'apps/produto/generated/prisma';
 
 @Injectable()
 export class CatalogoService {
   constructor(private catalogoRepository: CatalogoRepository) {}
 
-  async getCatalogo(): Promise<Catalogo[]> {
+  async getCatalogo(): Promise<Product[]> {
     return await this.catalogoRepository.getCatalogo();
   }
 }
