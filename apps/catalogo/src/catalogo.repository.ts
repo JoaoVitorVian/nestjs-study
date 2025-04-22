@@ -1,31 +1,23 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+// catalogo.repository.ts
 import { Injectable } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
 import { Product } from 'apps/produto/generated/prisma';
-import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class CatalogoRepository {
-  private readonly PRODUCT_SERVICE_URL = 'http://localhost:3001/getAllProducts';
+  private localProducts: Product[] = [];
 
-  constructor(private readonly httpService: HttpService) {}
+  getCatalogo(): Promise<Product[]> {
+    return Promise.resolve(this.localProducts);
+  }
 
-  async getCatalogo(): Promise<Product[]> {
-    try {
-      const response = await firstValueFrom(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        this.httpService.get<Product[]>(this.PRODUCT_SERVICE_URL).pipe(
-          catchError((error: Error) => {
-            throw new Error(`Falha ao buscar catálogo: ${error.message}`);
-          }),
-        ),
-      );
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return response.data;
-    } catch (error) {
-      throw new Error(`Falha ao buscar catálogo: ${error instanceof Error ? error.message : String(error)}`);
+  upsertProduct(productData: Product): Promise<void> {
+    const index = this.localProducts.findIndex((p) => p.id === productData.id);
+    if (index >= 0) {
+      this.localProducts[index] = productData;
+    } else {
+      this.localProducts.push(productData);
     }
+    console.log('Current products:', this.localProducts);
+    return Promise.resolve();
   }
 }
